@@ -37,7 +37,6 @@ namespace webapi
             });
 
 
-
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
 
@@ -58,7 +57,7 @@ namespace webapi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "webapi v1"));
             }
-            app.UseMiddleware<AuthenticationMiddleware>();
+            
             app.UseCors("AllowOrigin");
             app.UseHttpsRedirection();
 
