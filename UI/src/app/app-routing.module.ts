@@ -4,13 +4,14 @@ import { BrowserUtils } from '@azure/msal-browser';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { MsalGuard } from '@azure/msal-angular';
+import { AuthGuard } from './services.guard';
 
 
 const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [MsalGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: '',

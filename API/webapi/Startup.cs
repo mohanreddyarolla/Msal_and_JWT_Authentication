@@ -37,8 +37,8 @@ namespace webapi
             });
 
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
+/*            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));*/
 
 
             services.AddControllers();

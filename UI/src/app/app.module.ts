@@ -1,17 +1,19 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-
+import {MatCardModule} from '@angular/material/card';
+import { ReactiveFormsModule } from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
-
-
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
-
+import {MatDialogModule} from '@angular/material/dialog';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {
   IPublicClientApplication,
@@ -34,6 +36,7 @@ import {
   MsalInterceptor,
 } from '@azure/msal-angular';
 import { TokenInterceptor } from './tokenInterceptor.interceptor';
+import { LogInComponent } from './log-in/log-in.component';
 
 const GRAPH_ENDPOINT = 'https://graph.microsoft.com/';
 
@@ -87,8 +90,13 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   };
 }
 @NgModule({
-  declarations: [AppComponent, HomeComponent, ProfileComponent],
+  declarations: [AppComponent, HomeComponent, ProfileComponent, LogInComponent],
   imports: [
+    MatCardModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    ButtonModule,
+    DialogModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -96,7 +104,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     MatToolbarModule,
     MatListModule,
     HttpClientModule,
-
+    MatDialogModule,
     MsalModule.forRoot(
       new PublicClientApplication({
         auth: {
@@ -129,20 +137,20 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
       useClass: TokenInterceptor,
       multi: true,
     },
-    {
-      provide: MSAL_INSTANCE,
-      useFactory: MSALInstanceFactory,
-    },
-    {
-      provide: MSAL_GUARD_CONFIG,
-      useFactory: MSALGuardConfigFactory,
-    },
-    {
-      provide: MSAL_INTERCEPTOR_CONFIG,
-      useFactory: MSALInterceptorConfigFactory,
-    },
+    // {
+    //   provide: MSAL_INSTANCE,
+    //   useFactory: MSALInstanceFactory,
+    // },
+    // {
+    //   provide: MSAL_GUARD_CONFIG,
+    //   useFactory: MSALGuardConfigFactory,
+    // },
+    // {
+    //   provide: MSAL_INTERCEPTOR_CONFIG,
+    //   useFactory: MSALInterceptorConfigFactory,
+    // },
     MsalService,
-    MsalGuard,
+    
     MsalBroadcastService,
   ],
   bootstrap: [AppComponent, MsalRedirectComponent],

@@ -14,19 +14,34 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(private authService:AuthenticationService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return this.authService.getAccessToken().pipe(
-      switchMap((tokenResponse) => {
-        // Clone the request and add the Authorization header
-        const modifiedRequest = request.clone({
-          setHeaders: {
-            Authorization: `Bearer ${tokenResponse.accessToken}`,
-          },
-        });
+    if(this.authService.loginType == 'normal')
+    {
+      let jwtToken = JSON.parse( localStorage.getItem('JWT_Token')!);
+      const modifiedRequest = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${jwtToken}`,
+          'loginType':this.authService.loginType
+        },
+      });
 
-        // Pass the modified request to the next handler
-        return next.handle(modifiedRequest);
-      })
-    );
+      return next.handle(modifiedRequest);
+    }
+    else 
+    {
+      return this.authService.getAccessToken().pipe(
+        switchMap((tokenResponse) => {
+          const modifiedRequest = request.clone({
+            setHeaders: {
+              Authorization: `Bearer ${tokenResponse.accessToken}`,
+              'loginType':this.authService.loginType
+            },
+          });
+
+          return next.handle(modifiedRequest);
+        })
+      );
+    }
+    
   
   }
 

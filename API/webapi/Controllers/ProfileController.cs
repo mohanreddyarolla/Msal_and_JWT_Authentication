@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace webapi.Controllers
 {
-    [Authorize]
+    [CustomAuthorizer]
     [RequiredScope("read")]
     [ApiController]
     [Route("[controller]")]
@@ -19,11 +19,10 @@ namespace webapi.Controllers
         public ActionResult Get()
         {
 
-            var email = HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
-
+            
             var userData = new
             {
-                Email = email,
+                Email = "yor email",
 
                 // Other user data properties
             };
